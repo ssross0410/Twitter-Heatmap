@@ -12,7 +12,7 @@ var app = express();
 // set .html files as the extension of view engine
 app.set('view engine', 'html');
 
-//Setup rotuing for app
+// the public folder is the where the static files locate at
 app.use(express.static(path.join(__dirname, 'public')));
 
 // set the port number and host URL here
