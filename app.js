@@ -21,10 +21,10 @@ app.set('host', config.host);
 
 
 var client = new Twitter({
-  consumer_key: 'LiQmxukiPFoJd3DYjcPECP6q4',
-  consumer_secret: '7oPs6nNlQs9BeCb4hNg7lm9MsA5gH41VjICkEqzq1UV37W83Di',
-  access_token_key: '868960808-qD1rr0UYV12JoolV0qXo242V2j1J7UlNUCZimzDc',
-  access_token_secret: '3cm8cPiJac0GroBAV38lRM0F8tylAh6Ny9BTYbfqOH42s'
+  consumer_key: config.consumer_key,
+  consumer_secret: config.consumer_secret,
+  access_token_key: config.access_token_key,
+  access_token_secret: config.access_token_secret
 })
 
 // start the server and socket io connection

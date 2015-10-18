@@ -15,8 +15,6 @@ function initialize() {
     styles: light_grey_style
   });
   
-  //Setup heat map and link to Twitter array we will append data to
-  //var heatmap;
   var heatmapData = new google.maps.MVCArray();
   var heatmap = new google.maps.visualization.HeatmapLayer({
     data: heatmapData,
