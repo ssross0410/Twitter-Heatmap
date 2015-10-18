@@ -27,7 +27,7 @@ var client = new Twitter({
   access_token_secret: '3cm8cPiJac0GroBAV38lRM0F8tylAh6Ny9BTYbfqOH42s'
 })
 
-
+// start the server and socket io connection
 var server = http.createServer(app);
 var io = require('socket.io').listen(server);
 
@@ -37,9 +37,6 @@ server.listen(app.get('port'), function(){
 
 AWS.config.update({
   region: "us-west-2",
-  // endpoint: "http://localhost:8000",
-  AWSAccessKeyId: "AKIAIRC5GWZVMBEDAMAA",
-  AWSSecretKey: "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"
 });
 
 var dynamodbDoc = new AWS.DynamoDB.DocumentClient();
@@ -94,31 +91,7 @@ io.sockets.on('connection', function (socket) {
                 //Send out to web sockets channel.
                 socket.emit('twitter-stream', point);
               }
-              // else if(tweet.place){
-              //   if(tweet.place.bounding_box.type === 'Polygon'){
-              //     // Calculate the center of the bounding box for the tweet
-              //     var coord, _i, _len;
-              //     var centerLat = 0;
-              //     var centerLng = 0;
-
-              //     for (_i = 0, _len = coords.length; _i < _len; _i++) {
-              //       coord = coords[_i];
-              //       centerLat += coord[0];
-              //       centerLng += coord[1];
-              //     }
-              //     centerLat = centerLat / coords.length;
-              //     centerLng = centerLng / coords.length;
-
-              //     // Build json object and broadcast it
-              //     var point = {"latitude": centerLat,"longitude": centerLng};
-                  
-              //     socket.broadcast.emit("twitter-stream", point);
-
-              //     //Send out to web sockets channel.
-              //     socket.emit('twitter-stream', point);
-
-              //   }
-              // }
+             
             }
             // stream.on('limit', function(limitMessage) {
             //   return console.log(limitMessage);
