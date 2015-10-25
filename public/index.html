@@ -129,7 +129,7 @@
 
 			  if(io !== undefined) {
 			    // Storage for WebSocket connections
-			    var socket = io.connect("http://localhost:3000");
+			    var socket = io.connect("http://twittermap-production.elasticbeanstalk.com");
 
 			    socket.on('twitter-stream', function (data) {
 
