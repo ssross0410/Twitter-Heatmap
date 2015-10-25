@@ -16,7 +16,7 @@ app.set('view engine', 'html');
 app.use(express.static(path.join(__dirname, 'public')));
 
 // set the port number and host URL here
-app.set('port', process.env.PORT || 3000);
+app.set('port', process.env.PORT || 80);
 app.set('host', config.host);
 
 
@@ -46,8 +46,11 @@ var table = "TweetsInfo";
 //Create web sockets connection.
 io.sockets.on('connection', function (socket) {
 
+  console.log("web socket connected!");
+
   socket.on("start tweets", function() {
 
+    console.log("listend on start tweets event");
     //if(stream === null) {
       //Connect to twitter stream passing in filter for entire world.
       var stream = client.stream('statuses/filter', {'locations':'-180, -90, 180, 90'}, function(stream) {
@@ -76,40 +79,40 @@ io.sockets.on('connection', function (socket) {
                   if (err) {
                       console.error("Unable to add item. Error JSON:", JSON.stringify(err, null, 2));
                   } else {
-                      console.log("Added item:", JSON.stringify(data, null, 2));
+                      // console.log("Added item:", JSON.stringify(data, null, 2));
                   }
                 });
 
                 //If so then build up some nice json and send out to web sockets
-                var point = {
+                var info = {
                               "latitude": tweet.coordinates.coordinates[0],
-                              "longitude": tweet.coordinates.coordinates[1]
+                              "longitude": tweet.coordinates.coordinates[1],
+                              "create_time": create_time,
+                              "contents": content
                             };
 
-                socket.broadcast.emit("twitter-stream", point);
+                socket.broadcast.emit("twitter-stream", info);
 
                 //Send out to web sockets channel.
-                socket.emit('twitter-stream', point);
+                socket.emit('twitter-stream', info);
               }
              
             }
-            // stream.on('limit', function(limitMessage) {
-            //   return console.log(limitMessage);
-            // });
+            stream.on('limit', function(limitMessage) {
+              return console.log(limitMessage);
+            });
 
-            // stream.on('warning', function(warning) {
-            //   return console.log(warning);
-            // });
+            stream.on('warning', function(warning) {
+              return console.log(warning);
+            });
 
-            // stream.on('disconnect', function(disconnectMessage) {
-            //   return console.log(disconnectMessage);
-            // });
+            stream.on('disconnect', function(disconnectMessage) {
+              return console.log(disconnectMessage);
+            });
         });
       });
   });
 
-    // Emits signal to the client telling them that the
-    // they are connected and can start receiving Tweets
     socket.emit("connected");
 });
 
