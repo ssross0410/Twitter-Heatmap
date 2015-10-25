@@ -2,7 +2,30 @@
 <html lang="en">
 <meta charset="UTF-8">
 <head>
-	<title>Twits Heatmap</title>
+	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
+
+    <title>Tweets Heatmap</title>
+
+    <!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css" integrity="sha384-aUGj/X2zp5rLCbBxumKTCw2Z50WgIr1vs/PFN4praOTvYXWlVyh2UtNUU0KAUhAX" crossorigin="anonymous">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" integrity="sha512-K1qjQ+NcF2TYO/eI3M6v8EiNYZfA95pQumfvcVrTHtwQVDG+aHRqLi/ETn2uB+1JqwYqVG3LIvdm9lj6imS/pQ==" crossorigin="anonymous"></script>
+
+    <!-- Bootstrap core CSS -->
+    <link href="../../dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="jumbotron.css" rel="stylesheet">
 	<!-- Generic -->
 	<link rel="stylesheet" href="css/index.css">
 	<!-- Socket.io -->
@@ -15,52 +38,178 @@
 	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false&libraries=visualization">
 	</script>
 	
-	<script src="/js/tweetHeatmap.js" type="text/javascript"></script>
-
-	<!-- Bootstrap -->
-	<!--http://getbootstrap.com/2.3.2/-->
-	<script src="/libs/bootstrap/js/bootstrap.js"></script>
-	<link href="/libs/bootstrap/css/bootstrap.css" rel="stylesheet" media="screen">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link href="/libs/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
-
-
-
 </head>
 
-<body onload="initialize()">
-
-	<div class="navbar navbar-fixed-top navbar-inverse">
-		<div class="navbar-inner">
-			<div class="container">        
-				<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-				</a>
-
-				<div class="dropdown">
-				  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-				    All
-				    <span class="caret"></span>
-				  </button>
-
-				  
-
-				  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-				    <li><a href="#" id = "home">Home</a></li>
-				    <li><a href="#">Another action</a></li>
-				    <li><a href="#">Something else here</a></li>
-				    <li><a href="#">Separated link</a></li>
-				  </ul>
-				</div>
-
-			</div>
-		</div>
-	</div>
+<body>
+	 <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Tweets Heatmap</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          
+        	<div class="btn-group" role="group" aria-label="...">
+        	  <button type="button" class="btn btn-default" id = "all">All</button>
+			  <button type="button" class="btn btn-default" id = "sport">Sport</button>
+			  <button type="button" class="btn btn-default" id = "music">Music</button>
+			</div>  
+        </div><!--/.navbar-collapse -->
+      </div>
+    </nav>
 
 	<div class="container">
 		<div id="heatmap"></div>
+		<script>
+			$(function() {
+			
+			  //Setup Google Map
+			  var NYC = new google.maps.LatLng(40.77, -73.98);
+
+			  var light_grey_style = [{"featureType":"landscape","stylers":[{"saturation":-100},{"lightness":65},{"visibility":"on"}]},{"featureType":"poi","stylers":[{"saturation":-100},{"lightness":51},{"visibility":"simplified"}]},{"featureType":"road.highway","stylers":[{"saturation":-100},{"visibility":"simplified"}]},{"featureType":"road.arterial","stylers":[{"saturation":-100},{"lightness":30},{"visibility":"on"}]},{"featureType":"road.local","stylers":[{"saturation":-100},{"lightness":40},{"visibility":"on"}]},{"featureType":"transit","stylers":[{"saturation":-100},{"visibility":"simplified"}]},{"featureType":"administrative.province","stylers":[{"visibility":"off"}]},{"featureType":"water","elementType":"labels","stylers":[{"visibility":"on"},{"lightness":-25},{"saturation":-100}]},{"featureType":"water","elementType":"geometry","stylers":[{"hue":"#ffff00"},{"lightness":-25},{"saturation":-97}]}];
+			 
+			  var map = new google.maps.Map(document.getElementById("heatmap"), {
+			    center: NYC,
+			    zoom: 2,
+			    mapTypeId: google.maps.MapTypeId.ROADMAP,
+			    mapTypeControl: true,
+			    mapTypeControlOptions: {
+			      style: google.maps.MapTypeControlStyle.DROP_DOWN,
+			      position: google.maps.ControlPosition.RIGHT_BOTTOM
+			    },
+			    styles: light_grey_style
+			  });
+			  
+			  var heatmapData = new google.maps.MVCArray();
+
+			 
+			  function resetHeatmap() {
+			    var heatmap = new google.maps.visualization.HeatmapLayer({
+			      data: heatmapData,
+			      radius: 25
+			    });
+			    return heatmap;
+			  }
+
+			  var heatmap = resetHeatmap();
+			  heatmap.setMap(map);
+
+			  var all = 0;
+			  var sport = 0;
+			  var music = 0;
+
+
+			  var sportArray = ["nba", "mj", "football", "soccer", "assist", "harden", "lebron", "james", "durant", "curry", "davis", "premier", "shoot", "manchester", "united", "lakers", "la", "barcenola", "chelsea", "arsenal", "rooney", "martial", "messi", "ronaldo", "neymar", "madrid", "westbrook", "paul", "warrior", "caves", "rockets", "knicks", "yankee", "stadium", "field", "squad", "injury", "celtics", "heat", "miami"];
+
+			  var musicArray = ["gaga", "taylor", "swift", "sam smith", "nicki", "maroon", "jayz", "perry", "rihanna", "harris", "calvin", "goulding", "flo rida", "sia", "beyonce", "ariana", "pitbull", "hozier", "selena", "one direction", "coldplay", "martin", "david guetta", "usher", "eminem", "underwood", "brown", "billboard", "bruno", "mars", "ne-yo", "zedd", "kanye west", "iggy", "timberland", "bieber", "sugar"];
+
+			  $("#all").click(function(){
+			      all = 1;
+			      sport = 0;
+			      music = 0;
+			  });
+			  
+
+			  $("#sport").click(function(){
+			      sport = 1;
+			      all = 0;
+			      music = 0;
+			  });
+
+			  $("#music").click(function(){
+			      music = 1;
+			      all = 0;
+			      sport = 0;
+			  });
+
+			  if(io !== undefined) {
+			    // Storage for WebSocket connections
+			    var socket = io.connect("http://localhost:3000");
+
+			    socket.on('twitter-stream', function (data) {
+
+			      //Add tweet to the heat map array.
+			      var tweetLocation = new google.maps.LatLng(data.longitude,data.latitude);
+			      var content = data.contents;
+
+			      
+			    
+			      if(music === 1 || sport === 1) {
+			      	// console.log(data.longitude);
+			      	// console.log(data.latitude);
+			      	// console.log(content);
+			      	if(sport === 1) {
+			      	  for(var i = 0; i < sportArray.length; i++) {
+			      	  	  if(content.toLowerCase().indexOf(sportArray[i]) >= 0) {
+					      	  heatmapData.push(tweetLocation);
+					      	  //Flash a dot onto the map quickly
+						      var image = "css/small-dot-icon.png";
+						      var marker = new google.maps.Marker({
+						        position: tweetLocation,
+						        map: map,
+						        icon: image
+						      });
+						      setTimeout(function(){
+						        marker.setMap(null);
+						      },1000);
+						  }    
+					  }  
+				    }
+				    else {
+				    	for(var i = 0; i < musicArray.length; i++) {
+			      	  	  if(content.toLowerCase().indexOf(musicArray[i]) >= 0) {
+					      	  heatmapData.push(tweetLocation);
+					      	  //Flash a dot onto the map quickly
+						      var image = "css/small-dot-icon.png";
+						      var marker = new google.maps.Marker({
+						        position: tweetLocation,
+						        map: map,
+						        icon: image
+						      });
+						      setTimeout(function(){
+						        marker.setMap(null);
+						      },1000);
+						  }    
+					  }
+				    }
+			      }	
+			      else {
+			      	  heatmapData.push(tweetLocation);
+			      	  //Flash a dot onto the map quickly
+				      var image = "css/small-dot-icon.png";
+				      var marker = new google.maps.Marker({
+				        position: tweetLocation,
+				        map: map,
+				        icon: image
+				      });
+				      setTimeout(function(){
+				        marker.setMap(null);
+				      },1000);
+			      }
+			      
+
+			    });
+
+			    socket.on("connected", function(r) {
+			      socket.emit("start tweets");
+			    });
+			  }
+			})
+		</script>
 	</div>
+
+	<!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="../../dist/js/bootstrap.min.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
 </body>
+
 </html>

@@ -46,11 +46,7 @@ var table = "TweetsInfo";
 //Create web sockets connection.
 io.sockets.on('connection', function (socket) {
 
-  console.log("web socket connected!");
-
   socket.on("start tweets", function() {
-
-    console.log("listend on start tweets event");
     //if(stream === null) {
       //Connect to twitter stream passing in filter for entire world.
       var stream = client.stream('statuses/filter', {'locations':'-180, -90, 180, 90'}, function(stream) {
@@ -61,10 +57,6 @@ io.sockets.on('connection', function (socket) {
                 var id = tweet.id;
                 var create_time = tweet.created_at;
                 var content = tweet.text;
-
-                console.log(id);
-                console.log(create_time);
-                console.log(content);
 
                 var params = {
                     TableName: table,
