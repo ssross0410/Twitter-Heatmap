@@ -1,7 +1,7 @@
 {
-	"host": "http://localhost:80",
-	"consumer_key": "LiQmxukiPFoJd3DYjcPECP6q4",
-	"consumer_secret": "7oPs6nNlQs9BeCb4hNg7lm9MsA5gH41VjICkEqzq1UV37W83Di",
-	"access_token_key": "868960808-qD1rr0UYV12JoolV0qXo242V2j1J7UlNUCZimzDc",
-	"access_token_secret": "3cm8cPiJac0GroBAV38lRM0F8tylAh6Ny9BTYbfqOH42s"
+	"host": "http://localhost:3000",
+	"consumer_key": "",
+	"consumer_secret": "",
+	"access_token_key": "",
+	"access_token_secret": ""
 }
